@@ -10,32 +10,32 @@ import {
 } from "@mui/material";
 import { useNotification } from "../../context/notification.context";
 import { LoginValidate } from "../../utils/validate.form";
+import { useAuth } from "../../context/auth.context";
+import { useNavigate } from "react-router-dom";
 
 type LoginType = {
-  username: string;
+  email: string;
   password: string;
 };
 
 export const LoginPage: React.FC<{}> = () => {
+  const { login } = useAuth();
   const { getError, getSuccess } = useNotification();
   const [loginData, setLoginData] = React.useState<LoginType>({
-    username: "",
+    email: "",
     password: "",
   });
+
+  const navigate = useNavigate()
 
   const dataLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
-    LoginValidate.validate(loginData)
-      .then(() => {
-        getSuccess(JSON.stringify(loginData));
-      })
-      .catch((error) => {
-        getError(error.message);
-      });
+    await login(loginData.email, loginData.password);
+    navigate("/")
   };
 
   return (
@@ -54,9 +54,9 @@ export const LoginPage: React.FC<{}> = () => {
             </Typography>
             <Box component="form" onSubmit={handleSubmit}>
               <TextField
-                name="username"
+                name="email"
                 margin="normal"
-                type="text"
+                type="email"
                 fullWidth
                 label="Email"
                 sx={{ mt: 2, mb: 1.5 }}
@@ -78,7 +78,7 @@ export const LoginPage: React.FC<{}> = () => {
                 variant="contained"
                 sx={{ mt: 1.5, mb: 3 }}
               >
-                sign in
+                Confirm
               </Button>
             </Box>
           </Paper>

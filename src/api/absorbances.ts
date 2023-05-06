@@ -6,4 +6,7 @@ export const products = {
   create: function () {
     return instance.post(endpoint);
   },
+  getAvgAbsorbance: function () {
+    return instance.get(endpoint)
+  }
 };

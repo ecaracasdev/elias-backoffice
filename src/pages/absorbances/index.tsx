@@ -8,6 +8,7 @@ interface Absorbance {
     temperature: string;
     concentration: string;
     dayOfStudy: string;
+    compound: string;
   };
   maxIntensities: number[];
   avgIntensity: number;
@@ -20,10 +21,12 @@ export const AbsorbancesPage: React.FC<{}> = () => {
     temperature: string;
     concentration: string;
     dayOfStudy: string;
+    compound: string;
   }>({
     temperature: "",
     concentration: "",
     dayOfStudy: "",
+    compound: "",
   });
 
   const navigate = useNavigate();
@@ -60,7 +63,6 @@ export const AbsorbancesPage: React.FC<{}> = () => {
     setAbsorbances(newAbsorbances);
   };
 
-
   const filteredAbsorbances = absorbances.filter((absorbance) => {
     return (
       absorbance._id.temperature.includes(filter.temperature) &&
@@ -95,9 +97,16 @@ export const AbsorbancesPage: React.FC<{}> = () => {
         onChange={(e) => setFilter({ ...filter, dayOfStudy: e.target.value })}
         placeholder="Filter by day of study"
       />
+      <input
+        type="text"
+        value={filter.compound}
+        onChange={(e) => setFilter({ ...filter, compound: e.target.value })}
+        placeholder="Filter Compuesto"
+      />
       <table>
         <thead>
           <tr>
+            <th>Compound</th>
             <th>Temperature</th>
             <th>Concentration</th>
             <th>Day of study</th>
@@ -108,6 +117,7 @@ export const AbsorbancesPage: React.FC<{}> = () => {
         <tbody>
           {filteredAbsorbances.map((absorbance) => (
             <tr key={JSON.stringify(absorbance._id)}>
+              <td>{absorbance._id.compound}</td>
               <td>{absorbance._id.temperature}</td>
               <td>{absorbance._id.concentration}</td>
               <td>{absorbance._id.dayOfStudy}</td>

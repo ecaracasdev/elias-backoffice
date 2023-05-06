@@ -12,8 +12,9 @@ export const HomePage: React.FC<{}> = () => {
   const { refreshToken } = useAuth();
   const [fecha, setFecha] = useState("");
   const [temperatura, setTemperatura] = useState("");
+  const [compound, setCompound] = useState("");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [filesData, setFilesData] = useState<FileData[]>([]);
+  // const [filesData, setFilesData] = useState<FileData[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -49,6 +50,7 @@ export const HomePage: React.FC<{}> = () => {
       const filesData = await Promise.all(promises);
       for (const file of filesData) {
         const payload = {
+          compound: compound,
           temperature: temperatura,
           dayOfStudy: fecha,
           absorbances: file,
@@ -60,10 +62,9 @@ export const HomePage: React.FC<{}> = () => {
             headers: { Authorization: `Bearer ${refreshToken}` },
           }
         );
-        console.log(response);
       }
 
-      setFilesData(filesData);
+      // setFilesData(filesData);
       setIsLoading(false);
       setIsModalOpen(true);
       setSelectedFiles([]);
@@ -79,6 +80,18 @@ export const HomePage: React.FC<{}> = () => {
     <div>
       <h1>Subir Archivos</h1>
       <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="compound">
+            Compuesto:
+            <input
+              type="text"
+              name="compound"
+              id="compound"
+              defaultValue={compound}
+              onChange={(event) => setCompound(event.target.value)}
+            />
+          </label>
+        </div>
         <div>
           <label htmlFor="fecha">
             Fecha:
@@ -103,6 +116,7 @@ export const HomePage: React.FC<{}> = () => {
             />
           </label>
         </div>
+
         <div>
           <label htmlFor="subirArchivos">
             Seleccionar Archivos:

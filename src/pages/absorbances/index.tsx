@@ -75,13 +75,19 @@ export const AbsorbancesPage: React.FC<{}> = () => {
     <div>
       <h1>Absorbances</h1>
       <button onClick={() => navigate("/")}>Add More Files</button>
+      {/***
+       * hay que modificar los filtros para que sean select, van a seguir seteando el state de cada filter pero en lugar de tomar 
+       * el valor que va escribiendo el usuario, los valores tienen que venir de una consulta a la api 
+       *  getConditions() que es un findConditionsByUserId en realidad , trae una lista con las codiciones con las que ha ido trabajando
+       * el usuario 
+       *
+       */}
       <input
         type="text"
         value={filter.temperature}
         onChange={(e) => setFilter({ ...filter, temperature: e.target.value })}
         placeholder="Filter by temperature"
       />
-
       <input
         type="text"
         value={filter.concentration}

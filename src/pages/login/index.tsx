@@ -8,8 +8,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useNotification } from "../../context/notification.context";
-import { LoginValidate } from "../../utils/validate.form";
+// import { useNotification } from "../../context/notification.context";
+// import { LoginValidate } from "../../utils/validate.form";
 import { useAuth } from "../../context/auth.context";
 import { useNavigate } from "react-router-dom";
 
@@ -20,7 +20,7 @@ type LoginType = {
 
 export const LoginPage: React.FC<{}> = () => {
   const { login } = useAuth();
-  const { getError, getSuccess } = useNotification();
+  // const { getError, getSuccess } = useNotification();
   const [loginData, setLoginData] = React.useState<LoginType>({
     email: "",
     password: "",

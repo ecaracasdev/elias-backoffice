@@ -11,7 +11,11 @@ Modal.setAppElement("#root");
 export const HomePage: React.FC<{}> = () => {
   const { refreshToken } = useAuth();
   const [fecha, setFecha] = useState("");
+
+  // const [temperatura, setTemperatura] = useState("");
   const [temperatura, setTemperatura] = useState("");
+  const [unidadTemperatura, setUnidadTemperatura] = useState("");
+
   const [compound, setCompound] = useState("");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   // const [filesData, setFilesData] = useState<FileData[]>([]);
@@ -55,7 +59,7 @@ export const HomePage: React.FC<{}> = () => {
           dayOfStudy: fecha,
           absorbances: file,
         };
-        const response = await axios.post(
+        /* const response =  */await axios.post(
           "http://localhost:1337/api/absorbances",
           payload,
           {
@@ -75,6 +79,28 @@ export const HomePage: React.FC<{}> = () => {
       setIsLoading(false);
     }
   };
+
+  function handleUnidadTemperaturaChange(
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) {
+    setUnidadTemperatura(event.target.value);
+    setTemperatura((prevTemperatura) => {
+      const numericValue = parseFloat(prevTemperatura);
+      if (isNaN(numericValue)) {
+        return "";
+      }
+      switch (event.target.value) {
+        case "K":
+          return `${numericValue} K`;
+        case "C":
+          return `${numericValue} °C`;
+        case "F":
+          return `${numericValue} °F`;
+        default:
+          return "";
+      }
+    });
+  }
 
   return (
     <div>
@@ -111,10 +137,22 @@ export const HomePage: React.FC<{}> = () => {
               type="text"
               name="temperatura"
               id="temperatura"
-              defaultValue={temperatura}
-              onChange={(event) => setTemperatura(event.target.value)}
+              value={temperatura}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setTemperatura(event.target.value)
+              }
             />
           </label>
+          <select
+            name="unidadTemperatura"
+            id="unidadTemperatura"
+            value={unidadTemperatura}
+            onChange={handleUnidadTemperaturaChange}
+          >
+            <option value="K">K</option>
+            <option value="C">°C</option>
+            <option value="F">°F</option>
+          </select>
         </div>
 
         <div>
